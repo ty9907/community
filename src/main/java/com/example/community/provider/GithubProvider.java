@@ -21,7 +21,7 @@ public class GithubProvider {
         OkHttpClient client= new OkHttpClient();
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
         Request request=new Request.Builder()
-                .url("https://github.com/login/oauth/access_token")         //url写为http，返回的string是HTML文档
+                .url("https://github.com/login/oauth/access_token")         //url写为http时，返回的string是HTML文档
                 .post(body)
                 .build();
         try {
@@ -31,7 +31,7 @@ public class GithubProvider {
             String[] split =string.split("&");  //分解GitHub返回值
             String tokenstr=split[0]; //获取GitHub返回token部分 access_token=8aebae74c5b02be081bd9ac63ca1dd06824067d4
             String token=tokenstr.split("=")[1];    //获取token值  8aebae74c5b02be081bd9ac63ca1dd06824067d4
-                //String token=string.split(“&”)[0].split("=")[1]
+            //String token=string.split(“&”)[0].split("=")[1]
             System.out.println(string);
             return token;
         } catch (IOException e) {

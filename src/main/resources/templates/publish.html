@@ -2,22 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="type" charset="UTF-8">
-    <title>社区</title>
+    <title>发布</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/community.css">
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
+<!-- 问题发布页面 -->
 <body>
-
-<nav class="navbar navbar-default">     <!--顶部工具栏 （搜索框、登录按钮、个人信息按钮） -->
+<nav class="navbar navbar-default">          <!--顶部工具栏 （搜索框、登录按钮、个人信息按钮） -->
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsesd" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">社区</span>
             </button>
-            <a class="navbar-brand" href="/">社区</a>
+            <a class="navbar-brand" href="#">社区</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <form class="navbar-form navbar-left">
@@ -31,13 +31,11 @@
                 <li th:if="${session.user!=null}">
                     <a href="/publish">发布</a>
                 </li>
-
-                <!-- 登录安妮-->
+                <!--登录按钮 -->
                 <li th:if="${session.user==null}">
                     <a href="http://github.com/login/oauth/authorize?client_id=39bd70ead46b025a1d69&redirect_url=http://localhost:8080/callback&scope=user&state=1">登录</a>
                 </li>
-
-                <!-- 个人信息按钮-->
+                <!--个人信息按钮 -->
                 <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropodown" role="button" aria-haspopup="true"
                        aria-expanded="false" th:text="${session.user.getName()}"><span class="caret"></span> </a>
@@ -54,31 +52,43 @@
 <div class="container-fluid main">
     <div class="row"></div>
     <div class="col-lg-9 col-md-12 col-sm-12 col-xs=12">
-        <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span> 发现</h2>
+        <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发布问题</h2>
         <hr>
 
-        <!-- 首页推荐问题-->
-        <div class="media" th:each="question:${questions}">
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object img-rounded"
-                         th:src="${question.user.avatarUrl}">   <!-- 提问者图像-->
-                </a>
+        <form action="/publish" method="post">
+            <div class="form-group">
+                <label for="title">问题标题</label> <!-- 文本框标题 -->
+                <input type="text" class="form-control" id="title" name="title"
+                       th:value="${title}" placeholder="问题标题">  <!-- 问题输入文本框,使用th:value标签回显 -->
             </div>
-            <div class="media-body">
-                <h4 class="media-heading" th:text="${question.title}"></h4>
-                <span th:text="${question.description}"></span><br>
-                <span class="text-desc">
-                    <span th:text="${question.commentCount}"></span>个回复·
-                    <span th:text="${question.viewCount}"></span>个浏览·
-                    <span th:text="${#dates.format(question.gmtCreate,'dd MMMMM yyyy')}"></span>
-                </span>
+            <div class="form-group">
+                <label for="description">问题描述</label>
+                <!-- <textarea></textarea>之间不能有空格,否则textarea光标不会在最左上，且有看不见的+号-->
+                <textarea name="description" id="description" class="form-control"
+                          th:value="${description}" cols="30" rows="10"></textarea>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="tag">添加标签：</label>
+                <input type="text" class="form-control" id="tag" name="tag"
+                       th:value="${tag}" placeholder="输入标签，以，分隔">
+            </div>
+
+            <!-- 错误信息和发布按钮 -->
+            <div class="container-fluid main">
+                <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs=12" th:text="${error}"
+                     th:if="${error!=null}"></div>
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs=12">
+                    <button type="submit" class="btn btn-success btn-publish">发布</button>
+                </div>
+            </div>
+        </form>
     </div>
 
     <div class="col-lg-3 col-md-12 col-sm-12 col-xm-12">
-        <h3>热门话题</h3>
+        <h3>问题发起指南</h3>
+        · 问题标题：请用精简的语言描述您发布的问题，不超过25个字。<br>
+        · 问题补充：详细描述您的问题内容，并确保问提描述清晰直观，并提供一些资料。<br>
+        · 选择标签：选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字。<br>
     </div>
 </div>
 </body>

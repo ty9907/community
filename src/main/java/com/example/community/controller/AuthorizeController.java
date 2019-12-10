@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -34,6 +33,19 @@ public class AuthorizeController {
     @Value("${github.redirectUrl}")
     private String redirectUrl;
 
+    /**
+     * github回调的URL处理事件
+     * 通过GitHub传回的数据查找到GitHub的token
+     * 利用token查找用户数据
+     * 将GitHub用户数据提取出来存入本地数据库
+     * 同时随机生成一个token字符串，并存入本地用户中
+     * 将随机生成的token存入cookies中，作为判断登录状态依据
+     * 最后重定向回主页
+     * @param code
+     * @param state
+     * @param response
+     * @return
+     */
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,
                            @RequestParam(name="state") String state,
@@ -46,7 +58,7 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirectUrl);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        if(githubUser != null){
+        if(githubUser != null&& githubUser.getId()!=0){
 
             //登录成功，存入用户信息，处于登录状态
             User user = new User();
@@ -56,6 +68,7 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatar_url());
             userMapper.insert(user);
             response.addCookie(new Cookie("token",token));
             return "redirect:/";

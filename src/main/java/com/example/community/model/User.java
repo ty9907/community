@@ -1,61 +1,18 @@
 package com.example.community.model;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
+@Data
 @Component
 public class User {
-    private Integer id;
-    private String accountId;
-    private String name;
+    private Integer id;     //用户id
+    private String accountId;       //用户GitHub id
+    private String name;        //用户GitHub名称
     private String token;
-    private Long gmtCreate;
-    private Long gmtModified;
+    private Long gmtCreate;     //创建时间
+    private Long gmtModified;   //创建时间戳
+    private String bio;         //用户描述
+    private String avatarUrl;      //用户头像图片URL
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Long getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Long gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Long getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Long gmtModified) {
-        this.gmtModified = gmtModified;
-    }
 }
