@@ -1,5 +1,6 @@
 package com.example.community.mapper;
 
+import com.example.community.dto.QuestionDTO;
 import com.example.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -39,4 +40,11 @@ public interface QuestionMapper {
 
     @Select("select count(1) from question where creator=#{userId}")
     Integer countByUserId(@Param(value="userId") Integer userId);
+
+    @Select("select id,title,description,gmt_create,gmt_modified,creator," +
+            "ifnull(comment_count,0) comment_count," +
+            "ifnull(view_count,0) view_count," +
+            "ifnull(like_count,0) like_count,tag from question " +
+            "where id=#{id}")
+    Question getById(@Param(value="id") Integer id);
 }
