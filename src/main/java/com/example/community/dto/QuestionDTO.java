@@ -4,7 +4,7 @@ import com.example.community.model.User;
 import lombok.Data;
 
 @Data
-public class QuestionDto {
+public class QuestionDTO {
 
     private Integer id;     //问题id
     private String title;       //问题标题

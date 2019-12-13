@@ -5,53 +5,16 @@
     <title>发布</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/community.css">
+    <link rel="stylesheet" href="css/community.css" >
+    <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <!-- 问题发布页面 -->
 <body>
-<nav class="navbar navbar-default">          <!--顶部工具栏 （搜索框、登录按钮、个人信息按钮） -->
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsesd" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">社区</span>
-            </button>
-            <a class="navbar-brand" href="#">社区</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="搜索问题">
-                </div>
-                <button type="submit" class="btn btn-default">搜索</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <!-- 发布问题按钮-->
-                <li th:if="${session.user!=null}">
-                    <a href="/publish">发布</a>
-                </li>
-                <!--登录按钮 -->
-                <li th:if="${session.user==null}">
-                    <a href="http://github.com/login/oauth/authorize?client_id=39bd70ead46b025a1d69&redirect_url=http://localhost:8080/callback&scope=user&state=1">登录</a>
-                </li>
-                <!--个人信息按钮 -->
-                <li class="dropdown" th:if="${session.user!=null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropodown" role="button" aria-haspopup="true"
-                       aria-expanded="false" th:text="${session.user.getName()}"><span class="caret"></span> </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">消息中心</a></li>
-                        <li><a href="#">个人资料</a></li>
-                        <li><a href="#">退出登录</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid main">
     <div class="row"></div>
-    <div class="col-lg-9 col-md-12 col-sm-12 col-xs=12">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
         <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发布问题</h2>
         <hr>
 
@@ -65,7 +28,7 @@
                 <label for="description">问题描述</label>
                 <!-- <textarea></textarea>之间不能有空格,否则textarea光标不会在最左上，且有看不见的+号-->
                 <textarea name="description" id="description" class="form-control"
-                          th:value="${description}" cols="30" rows="10"></textarea>
+                          th:text="${description}" cols="30" rows="10"></textarea>
             </div>
             <div class="form-group">
                 <label for="tag">添加标签：</label>
@@ -74,11 +37,17 @@
             </div>
 
             <!-- 错误信息和发布按钮 -->
+            <!-- 9 3划分区域，使发布按钮一直在右边，再在左边设置错误信息-->
             <div class="container-fluid main">
-                <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs=12" th:text="${error}"
-                     th:if="${error!=null}"></div>
-                <div class="col-lg-3 col-md-12 col-sm-12 col-xs=12">
-                    <button type="submit" class="btn btn-success btn-publish">发布</button>
+                <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                        <div  class="alert alert-danger col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                              th:text="${error}" th:if="${error!=null}">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <button type="submit" class="btn btn-success btn-publish">发布</button>
+                    </div>
                 </div>
             </div>
         </form>
