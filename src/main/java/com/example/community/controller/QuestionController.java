@@ -1,7 +1,6 @@
 package com.example.community.controller;
 
 import com.example.community.dto.QuestionDTO;
-import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +14,18 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     * 问题详情页面
+     * @param id 问题id
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/question/{id}")
     public String question(@PathVariable(name="id")Integer id, Model model){
 
         QuestionDTO questionDTO=questionService.getById(id);
+        //增加阅读数
+        questionService.incView(id);
         model.addAttribute("question",questionDTO);
         return "question";
     }

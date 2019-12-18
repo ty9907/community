@@ -1,5 +1,6 @@
-create table question(
-    id int auto_incement primary key,     --问题编号
+create table question
+(
+    id int auto_increment primary key,     --问题编号
     title varchar(50),      --问题标题
     description text ,
     gmt_create bigint,
