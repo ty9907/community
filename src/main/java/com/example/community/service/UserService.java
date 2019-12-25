@@ -14,6 +14,10 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 创建新用户(用户第一次登陆)或者更新用户信息(用户非第一次登陆)
+     * @param user
+     */
     public void createOrUpdate(User user) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andAccountIdEqualTo(user.getAccountId());

@@ -5,7 +5,6 @@ import com.example.community.mapper.QuestionMapper;
 import com.example.community.model.Question;
 import com.example.community.model.User;
 import com.example.community.service.QuestionService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +40,7 @@ public class PublishController {
      * @return
      */
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model) {
         QuestionDTO question=questionService.getById(id);
         //为了使表单提交失败后数据能回显到页面
@@ -66,7 +65,7 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
-                            @RequestParam(value = "id",required = false)Integer id,
+                            @RequestParam(value = "id",required = false)Long id,
                             HttpServletRequest request,
                             Model model) {
         //为了使表单提交失败后数据能回显到页面

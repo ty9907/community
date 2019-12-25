@@ -34,6 +34,7 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
+        <!--post请求-->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -69,6 +70,7 @@
             <version>2.0.1</version>
         </dependency>
 
+        <!--自动生成setter、getter方法        -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -79,6 +81,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 
