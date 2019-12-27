@@ -7,8 +7,8 @@ import java.util.List;
 
 
 @Data
-public class PaginationDTO {
-    private List<QuestionDTO> questions;    //当前页的问题信息
+public class PaginationDTO<T> {
+    private List<T> data;    //当前页的问题信息
     private boolean showPrevious;       //是否显示前一页按钮
     private boolean showfirstpage;      //是否显示首页按钮
     private boolean showEndPage;        //是否显示尾页按钮

@@ -10,9 +10,9 @@
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <script type="application/javascript">
-    window.onload=function () {
-        var closable=window.localStorage.getItem("closable");
-        if(closable == "true"){
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable == "true") {
             window.close();
             window.localStorage.removeItem("closable");
         }
@@ -27,7 +27,7 @@
         <hr>
 
         <!-- 首页推荐问题-->
-        <div class="media" th:each="question:${pagination.questions  }">
+        <div class="media" th:each="question:${pagination.data}">
             <div class="media-left">
                 <a href="#">
                     <img class="media-object img-rounded"
@@ -35,14 +35,14 @@
                 </a>
             </div>
             <div class="media-body">
-                <h4 class="media-heading" >
+                <h4 class="media-heading">
                     <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
                 </h4>
                 <span th:text="${question.description}"></span><br>
                 <span class="text-desc">
                     <span th:text="${question.commentCount}"></span>个回复·
                     <span th:text="${question.viewCount}"></span>个浏览·
-                    <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+                    <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>·
                 </span>
             </div>
         </div>

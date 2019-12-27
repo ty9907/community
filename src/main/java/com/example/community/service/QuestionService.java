@@ -73,7 +73,7 @@ public class QuestionService {
             questionDto.setUser(user);
             questionDtoList.add(questionDto);
         }
-        paginationDTO.setQuestions(questionDtoList);
+        paginationDTO.setData(questionDtoList);
 
         return paginationDTO;
     }
@@ -86,7 +86,7 @@ public class QuestionService {
      * @return
      */
     public PaginationDTO list(Long userId, Integer page, Integer size) {
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         Integer totalPage;
 
         //根据用户id查询用户总提问数
@@ -120,7 +120,7 @@ public class QuestionService {
             questionDto.setUser(user);
             questionDtoList.add(questionDto);
         }
-        paginationDTO.setQuestions(questionDtoList);
+        paginationDTO.setData(questionDtoList);
 
         return paginationDTO;
     }

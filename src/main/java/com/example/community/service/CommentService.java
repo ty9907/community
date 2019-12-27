@@ -2,6 +2,8 @@ package com.example.community.service;
 
 import com.example.community.dto.CommentDTO;
 import com.example.community.enums.CommentTypeEnum;
+import com.example.community.enums.NotificationStatusEnum;
+import com.example.community.enums.NotificationTypeEnum;
 import com.example.community.exception.CustomizeErrorCode;
 import com.example.community.exception.CustomizeException;
 import com.example.community.mapper.*;
@@ -34,12 +36,17 @@ public class CommentService {
 
     @Autowired
     private CommentExtMapper commentExtMapper;
+
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     /**
-     * 添加评论
-     * @param comment
+     * 添加评论，评论类型分为问题评论和回复评论，同时创建一个指向被评论者的通知
+     * @param comment   评论
+     * @param commmentator 评论人
      */
     @Transactional      //使整个方法具有事务性
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User commmentator) {
         //判断评论所属的问题是否存在
         if(comment.getParentId()==null||comment.getParentId()==0)
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
@@ -57,11 +64,19 @@ public class CommentService {
 
             commentMapper.insert(comment);
 
+            //查询评论所属问题作为回复的标题
+            Question question=questionMapper.selectByPrimaryKey(dbComment.getParentId());
+            if(question==null)
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+
             //使该评论的父评论评论数增加一
             Comment parentComment =new Comment();
             parentComment.setId(comment.getParentId());
             parentComment.setCommentCount(1);
             commentExtMapper.incCommentCount(parentComment);
+
+            createNotify(comment,dbComment.getCommentator(), commmentator.getName(),
+                    question.getTitle(), NotificationTypeEnum.REPLY_COMMENT,question.getId());
         }else{
             //评论为问题的评论
             Question question=questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -72,7 +87,33 @@ public class CommentService {
             commentMapper.insert(comment);
             question.setCommentCount(1);        //设置评论增加步长为一
             questionExtMapper.incCommentCount(question);    //增加问题评论数
+
+            createNotify(comment,question.getCreator(),commmentator.getName(),
+                    question.getTitle(), NotificationTypeEnum.REPLY_QUESTION,question.getId());
         }
+    }
+
+    /**
+     * 创建通知
+     * @param comment   回复的评论，即通知主体
+     * @param receiver  接收通知的人的id
+     * @param notifierName  回复人的名字
+     * @param outerTitle    回复的标题
+     * @param notificationTypeEnum  通知类型（回复问题还是评论）
+     * @param  outerId  该评论所属问题id
+     */
+    private void createNotify(Comment comment, Long receiver, String notifierName,
+                              String outerTitle, NotificationTypeEnum notificationTypeEnum,Long outerId){
+        Notification notification=new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(notificationTypeEnum.getType());
+        notification.setOuterid(outerId);
+        notification.setNotifier(comment.getCommentator());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setReceiver(receiver);
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
+        notificationMapper.insert(notification);
     }
 
     /**

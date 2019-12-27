@@ -26,7 +26,7 @@
                     <li th:if="${session.user!=null}">
                         <a href="/publish">提问</a>
                     </li>
-
+                    <li><a href="/profile/replies">通知<span class="badge" th:if="${session.unReadCount}>0" th:text="${session.unReadCount}"></span></a></li>
                     <!-- 登录按钮 -->
                     <li th:if="${session.user==null}">
                         <a href="http://github.com/login/oauth/authorize?client_id=39bd70ead46b025a1d69&redirect_url=http://localhost:8080/callback&scope=user&state=1">登录</a>
