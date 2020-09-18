@@ -6,7 +6,6 @@ import com.example.community.dto.CommentDTO;
 import com.example.community.dto.ResultDTO;
 import com.example.community.enums.CommentTypeEnum;
 import com.example.community.exception.CustomizeErrorCode;
-import com.example.community.mapper.NotificationMapper;
 import com.example.community.model.Comment;
 import com.example.community.model.User;
 import com.example.community.service.CommentService;

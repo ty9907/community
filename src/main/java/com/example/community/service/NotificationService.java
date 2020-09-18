@@ -91,8 +91,8 @@ public class NotificationService {
 
     /**
      *读取通知操作
-     * @param id
-     * @param user
+     * @param id 通知id
+     * @param user 被通知用户
      * @return
      */
     public NotificationDTO read(Long id, User user) {

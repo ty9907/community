@@ -47,12 +47,14 @@ public class AuthorizeController {
      * @param response
      * @return
      */
+    //ctrl+alt+v 快速创建变量
+    //shift+enter  光标移至下一行头
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,
                            @RequestParam(name="state") String state,
                            HttpServletResponse response){
-        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();   //ctrl+alt+v 快速创建变量
-        accessTokenDTO.setCode(code);                           //shift+enter  光标移至下一行头
+        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
+        accessTokenDTO.setCode(code);
         accessTokenDTO.setState(state);
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
